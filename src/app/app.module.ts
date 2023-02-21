@@ -17,9 +17,28 @@ import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpResponse} from '@an
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {UserPageComponent} from './user-page/user-page.component';
 import {AuthInterceptor} from './interceptors/AuthInterceptor';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatMenuModule} from '@angular/material/menu';
+import { UserDialogComponent } from './users-list/user-dialog/user-dialog.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { UserFormComponent } from './user-form/user-form.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import { PagesComponent } from './pages/pages.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, UsersListComponent, UserPageComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    UsersListComponent,
+    UserPageComponent,
+    UserDialogComponent,
+    UserFormComponent,
+    NavBarComponent,
+    PagesComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -33,7 +52,14 @@ import {AuthInterceptor} from './interceptors/AuthInterceptor';
     MatInputModule,
     MatCardModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTooltipModule,
+    MatMenuModule,
+    MatDialogModule,
+    MatToolbarModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]

@@ -30,7 +30,7 @@ export class AuthService {
         console.log(res);
         if (res.success && res.data['accessToken']) {
           this.setCookies(res.data['accessToken'], formData?.email);
-          this.router.navigate(['user']).then();
+          this.router.navigate(['pages/user']).then();
         }
       })
     ).subscribe();

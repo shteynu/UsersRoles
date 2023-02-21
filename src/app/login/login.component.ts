@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../services/auth.service';
+import {ValidationService} from '../services/validation.service';
 
 @Component({
   selector: 'app-login',
@@ -37,17 +38,18 @@ export class LoginComponent implements OnInit{
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private validationService: ValidationService
   ) {}
 
   ngOnInit(): void {}
 
 
   fieldHasError(fieldName: string): boolean {
-    return this.fieldHasErrorr(fieldName, this.loginForm);
+    return this.validationService.fieldHasError(fieldName, this.loginForm);
   }
 
   getErrorMessage(fieldName: string): string {
-    return this.getErrorMessages(
+    return this.validationService.getErrorMessage(
       fieldName,
       this.loginForm
     );
@@ -59,33 +61,4 @@ export class LoginComponent implements OnInit{
     }
   }
 
-  fieldHasErrorr(fieldName: string, targetForm: any): boolean {
-    const formField = targetForm?.controls[fieldName];
-    return !!(formField?.invalid && formField?.touched);
-  }
-
-  getErrorMessages(fieldName: string, targetForm: any): string {
-    const formField = targetForm?.get(fieldName);
-    const fieldErrors = targetForm?.controls[fieldName].errors;
-    return formField?.hasError('required')
-      ? 'Reuired field'
-      :
-      formField?.hasError('email')
-        ? 'Username must be email'
-        : formField?.hasError('minlength')
-          ? `Input should contain at least
-      ${this.getLengthError(fieldErrors.minlength)} characters`
-          : formField?.hasError('maxlength')
-            ? `Input should contain max
-      ${this.getLengthError(fieldErrors.maxlength)} characters`
-            : formField?.hasError('pattern')
-              ? 'Password must contain one uppercase, one lowercase and one special characters of #?!@$%^&*-'
-              : formField?.hasError('mismatch')
-                ? 'Passwords mismatch'
-                : 'Unknown error';
-  }
-
-  private getLengthError = (fieldError: any): string => {
-    return `(${fieldError?.actualLength} / ${fieldError?.requiredLength})`;
-  }
 }
