@@ -16,6 +16,7 @@ export class UserPageComponent {
   currentUser$: Observable<Profile | null> =
     this.dataExchangeService.currentUser$.asObservable();
   constructor(
+
     private dataExchangeService: DataExchangeServiceService,
     private authService: AuthService
   ) {}
