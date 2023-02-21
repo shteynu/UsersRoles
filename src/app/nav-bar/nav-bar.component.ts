@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {AuthService} from "../services/auth.service";
 import {Profile} from "../models/auth-data";
 import {Observable} from "rxjs";
@@ -6,7 +6,8 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.sass']
+  styleUrls: ['./nav-bar.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavBarComponent implements OnInit {
 

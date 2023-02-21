@@ -1,36 +1,32 @@
 <mat-toolbar>
-  <div class="container">
     <div class="d-flex align-items-center justify-content-between">
       <div class="toolbar-navigation">
         <ng-container *ngIf="currentUser | async as user;">
-          <a
+          <button
             mat-icon-button
-            [routerLink]="['/list']"
+            matTooltip="User Profile"
+            color="primary"
+            [routerLink]="['user', user.id]"
+          >
+            <mat-icon>home</mat-icon>
+          </button>
+          <button
+            mat-icon-button
             matTooltip="User List"
             color="primary"
+            [routerLink]="['list']"
           >
-            <mat-icon>users list</mat-icon>
-          </a>
-          <button
-            matTooltip="User Menu"
-            mat-icon-button
-            [matMenuTriggerFor]="menu"
-            aria-label="User Menu"
-          >
-            <mat-icon>account_circle</mat-icon>
+            <mat-icon>menu</mat-icon>
           </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item disabled>
-              <mat-icon>person</mat-icon>
-              <span>{{ user?.fullName }}</span>
-            </button>
-            <button mat-menu-item (click)="logOut()">
-              <mat-icon color="warn">logout</mat-icon>
+
+            <button
+              mat-icon-button
+              (click)="logOut()">
+              <mat-icon color="warn">open_in_new</mat-icon>
               <span>Logout</span>
             </button>
-          </mat-menu>
+
         </ng-container>
       </div>
     </div>
-  </div>
 </mat-toolbar>

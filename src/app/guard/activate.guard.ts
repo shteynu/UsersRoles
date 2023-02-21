@@ -9,8 +9,8 @@ import {
   UrlTree
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import {CookieService} from "ngx-cookie-service";
-import {AuthService} from "../services/auth.service";
+import {CookieService} from 'ngx-cookie-service';
+import {AuthService} from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'

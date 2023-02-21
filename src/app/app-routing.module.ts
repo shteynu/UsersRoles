@@ -7,11 +7,11 @@ import {ActivateGuard} from './guard/activate.guard';
 import {PagesComponent} from './pages/pages.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full'},
+  { path: '', redirectTo: 'login', pathMatch: 'full'},
   { path: 'login', component: LoginComponent},
   { path: 'pages', component: PagesComponent, children: [
       {
-        path: 'user',
+        path: 'user/:id',
         component: UserPageComponent,
         canActivate: [ActivateGuard]
       },

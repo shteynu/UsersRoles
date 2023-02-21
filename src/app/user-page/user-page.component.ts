@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {Profile} from '../models/auth-data';
@@ -8,7 +8,8 @@ import {AuthService} from '../services/auth.service';
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
-  styleUrls: ['./user-page.component.css']
+  styleUrls: ['./user-page.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPageComponent {
 

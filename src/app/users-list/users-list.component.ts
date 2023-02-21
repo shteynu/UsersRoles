@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -8,36 +17,42 @@ import {Profile} from '../models/auth-data';
 import {MatDialog} from '@angular/material/dialog';
 import {SnackMessageService} from '../services/snack-message.service';
 import {UsersService} from '../services/users.service';
+import {UserDialogComponent} from './user-dialog/user-dialog.component';
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.css']
+  styleUrls: ['./users-list.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersListComponent implements OnInit, AfterViewInit{
+export class UsersListComponent implements OnInit {
 
-  displayedColumns = ['created at', 'name', 'role'];
+  displayedColumns = ['date', 'fullName', 'role', 'userId', 'actions'];
   dataSource: MatTableDataSource<Profile>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  update: any;
-  delete: any;
 
   private readonly userRoles = environment?.userRoles;
-  @Input() userList!: Profile[];
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
 
   constructor(private exchangeServiceService: DataExchangeServiceService,
               private dialog: MatDialog,
               private messageService: SnackMessageService,
-              private usersService: UsersService) {}
+              private usersService: UsersService) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getUsers();
+  }
+
+  private getUsers(): void {
+    this.usersService.getAllUsers().subscribe(res => {
+      console.log(res);
+      this.dataSource = new MatTableDataSource<Profile>(res.data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    });
+  }
 
 
   visualizeUserRole(roleIndex: number | undefined): string {
@@ -89,13 +104,34 @@ export class UsersListComponent implements OnInit, AfterViewInit{
   }
 
   private openUserModal(user?: Profile) {
-   /* const userDialog = this.dialog.open(UserModal, {
+    const userDialog = this.dialog.open(UserDialogComponent, {
       width: '450px',
       maxWidth: '100%',
       data: user,
       disableClose: true,
     });
-    return await userDialog.afterClosed().toPromise();*/
+    return userDialog.afterClosed().toPromise();
+  }
+
+  onDelete(row) {
+    this.usersService.deleteUser(row.id).subscribe(
+      {
+      next: (res) => {
+        this.messageService.show({
+          message: `User (${row?.fullName}) has been removed successfully`,
+        });
+        this.getUsers();
+      },
+      error: (error) => {
+        this.messageService.show({
+          message: error?.message || 'Failure during update',
+        });
+      }
+    });
+  }
+
+  onUpdate(row) {
+
   }
 }
 

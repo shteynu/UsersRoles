@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {UsersService} from '../../services/users.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Profile} from '../../models/auth-data';
@@ -6,7 +6,8 @@ import {Profile} from '../../models/auth-data';
 @Component({
   selector: 'app-user-dialog',
   templateUrl: './user-dialog.component.html',
-  styleUrls: ['./user-dialog.component.sass']
+  styleUrls: ['./user-dialog.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDialogComponent implements OnInit {
   constructor(

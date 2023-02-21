@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {Profile} from '../models/auth-data';
 import {AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {ValidationService} from '../services/validation.service';
@@ -7,7 +7,8 @@ import {DataExchangeServiceService} from '../services/data-exchange-service.serv
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.sass']
+  styleUrls: ['./user-form.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserFormComponent implements OnInit {
 

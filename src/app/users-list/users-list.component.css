@@ -1,0 +1,7 @@
+/*.mat-table {
+  width: 100%;
+}
+
+::ng-deep mat-header-cell, mat-cell {
+  justify-content: center;
+}*/

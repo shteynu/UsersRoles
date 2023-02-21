@@ -7,8 +7,8 @@ import {HttpRequestData, LoginData, Profile, RequestData} from '../models/auth-d
 import {DataExchangeServiceService} from './data-exchange-service.service';
 import {ApiService} from './api.service';
 import {SnackMessageService} from './snack-message.service';
-import {map} from 'rxjs/operators';
-import {Observable} from "rxjs";
+import {concatMap, map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,10 +30,15 @@ export class AuthService {
         console.log(res);
         if (res.success && res.data['accessToken']) {
           this.setCookies(res.data['accessToken'], formData?.email);
-          this.router.navigate(['pages/user']).then();
         }
+      }),
+      concatMap(res => {
+        return this.userProfile();
       })
-    ).subscribe();
+    ).subscribe(res => {
+      const id = res?.id;
+      this.router.navigate(['pages/user', id]).then();
+    });
   }
 
   userProfile(): Observable<Profile> {
@@ -41,7 +46,7 @@ export class AuthService {
     console.log(userMail);
     const httpData: RequestData = { url: 'profiles', params: { email: userMail } };
     return this.apiService.get(httpData).pipe(
-      map(res =>{
+      map(res => {
         console.log(res);
         if (res.success && res.data?.length > 0) {
           const userInfo: Profile = res?.data[0];
@@ -53,20 +58,28 @@ export class AuthService {
       })
     );
   }
-  // LOGOUT
+
   logOut() {
     this.cookieService.deleteAll();
     this.dataExchangeService.currentUser$.next(null);
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/login']);
   }
 
 
   private setCookies(oAuthToken: string, email: string) {
-    const expires = Date.now();
+    const expires = this.expireTime10min();
     this.cookieService.set('authToken', oAuthToken, {
       path: '/',
       expires,
     });
     this.cookieService.set('email', email, { path: '/', expires });
+  }
+
+  private expireTime10min = () => {
+    const dNow = new Date();
+    let dTime = dNow.getTime();
+    dTime += 1000 * 600;
+    dNow.setTime(dTime);
+    return dNow;
   }
 }

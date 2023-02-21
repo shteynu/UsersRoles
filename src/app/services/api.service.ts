@@ -59,13 +59,12 @@ export class ApiService {
             return { success: true, data: res, error: null };
           }),
           catchError(error => {
-            // return { success: false, data: null, error }
             return throwError(() => new Error(error));
           })
         );
   }
 
-  delete (httpData: RequestData ) {
+  delete(httpData: RequestData ) {
       return this.http
         .delete(`${this.apiUrl}/${httpData.url}`, httpData.body)
         .pipe(
@@ -73,7 +72,6 @@ export class ApiService {
             return { success: true, data: res, error: null };
           }),
           catchError(error => {
-            // return { success: false, data: null, error }
             return throwError(() => new Error(error));
           })
         );
