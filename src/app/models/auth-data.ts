@@ -3,12 +3,6 @@ export interface LoginData {
   password: string;
 }
 
-export interface REGISTER_FORM_DATA extends LoginData{
-  fullName:string;
-  passwordConfirm?:string;
-  role?:number;
-}
-
 export interface HttpRequestData {
   url: string;
   params?: any;

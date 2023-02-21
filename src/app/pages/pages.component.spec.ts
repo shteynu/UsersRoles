@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PagesComponent } from './pages.component';
+import {modules} from "../models/module-util";
+import {NavBarComponent} from "../nav-bar/nav-bar.component";
 
 describe('PagesComponent', () => {
   let component: PagesComponent;
@@ -8,7 +10,10 @@ describe('PagesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PagesComponent ]
+      imports: [
+        ...modules
+      ],
+      declarations: [ PagesComponent, NavBarComponent ]
     })
     .compileComponents();
   });

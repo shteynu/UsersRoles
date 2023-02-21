@@ -1,6 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UserDialogComponent } from './user-dialog.component';
+import {UserDialogComponent} from './user-dialog.component';
+import {modules} from '../../models/module-util';
+import {UserFormComponent} from '../../user-form/user-form.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 describe('UserDialogComponent', () => {
   let component: UserDialogComponent;
@@ -8,7 +11,17 @@ describe('UserDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserDialogComponent ]
+      imports: [
+        ...modules,
+      ],
+      declarations: [ UserDialogComponent, UserFormComponent],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: {}
+        },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ]
     })
     .compileComponents();
   });

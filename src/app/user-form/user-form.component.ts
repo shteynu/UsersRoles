@@ -22,7 +22,7 @@ export class UserFormComponent implements OnInit {
 
   showPassword = false;
 
-  userForm!: FormGroup;
+  userForm: FormGroup = new FormGroup({});
   constructor(
     private formValidationService: ValidationService,
     private dataExchangeService: DataExchangeServiceService
@@ -37,7 +37,7 @@ export class UserFormComponent implements OnInit {
   get getFormData() {
     return { ...this.userForm.value, role: this.userForm.value?.role || 1 };
   }
-  // USER FORM PROPERTIES
+
   private get initUserForm() {
     const passwordValidator = [
       Validators.required,
@@ -62,7 +62,6 @@ export class UserFormComponent implements OnInit {
         email: new FormControl(
           {
             value: this.userData?.email || '',
-            // ! EMAIL CANT BE CHANGE BECAUSE OF USED TO AUTH
             disabled: this.userData ? true : false,
           },
           [
@@ -79,20 +78,17 @@ export class UserFormComponent implements OnInit {
           this.userData ? [] : passwordConfirmValidator
         ),
       }
-      // TODO CAN ACTIVATE FOR BETTER PERFORMANCE
-      // { updateOn: 'blur' }
     );
   }
-  // FIELD ERROR
+
   fieldHasError(fieldName: string): boolean {
     return this.formValidationService.fieldHasError(fieldName, this.userForm);
   }
-  // FIELD ERROR MESSAGE
+
   getErrorMessage(fieldName: string): string {
     return this.formValidationService.getErrorMessage(fieldName, this.userForm);
   }
 
-  // CUSTOM VALIDATOR
   private passwordMatchValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const passwordVal = this.userForm?.get('password')?.value;

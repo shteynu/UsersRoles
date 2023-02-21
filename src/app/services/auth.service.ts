@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-// TO NAVIGATE AFTER LOGIN
 import {Router} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
 

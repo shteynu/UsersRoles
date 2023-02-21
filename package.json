@@ -1,9 +1,9 @@
 {
-  "name": "angular-hero-team",
+  "name": "users",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently --kill-others \\\"json-server-auth --watch dataBase.json --port 8080\\\" \\\"ng serve\\\"",
+    "start": "concurrently --kill-others \"json-server-auth --watch dataBase.json --port 8080\" \"ng serve\"",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint"

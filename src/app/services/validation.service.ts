@@ -32,7 +32,7 @@ export class ValidationService {
                 ? 'Passwords mismatch'
                 : 'Unknown error';
   }
-  // MAKE LENGTH ERRORS SHORTER
+
   private getLengthError = (fieldError: any): string => {
     return `(${fieldError?.actualLength} / ${fieldError?.requiredLength})`;
   }
