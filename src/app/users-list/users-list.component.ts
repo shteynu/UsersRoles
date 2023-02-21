@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
@@ -27,15 +18,16 @@ import {UserDialogComponent} from './user-dialog/user-dialog.component';
 })
 export class UsersListComponent implements OnInit {
 
-  displayedColumns = ['date', 'fullName', 'role', 'userId', 'actions'];
+  displayedColumns = ['date', 'fullName', 'role', 'id', 'actions'];
   dataSource: MatTableDataSource<Profile>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  data: Profile[];
 
   private readonly userRoles = environment?.userRoles;
 
-  constructor(private exchangeServiceService: DataExchangeServiceService,
+  constructor(private exchangeService: DataExchangeServiceService,
               private dialog: MatDialog,
               private messageService: SnackMessageService,
               private usersService: UsersService) {
@@ -48,26 +40,14 @@ export class UsersListComponent implements OnInit {
   private getUsers(): void {
     this.usersService.getAllUsers().subscribe(res => {
       console.log(res);
+      this.data = res.data;
       this.dataSource = new MatTableDataSource<Profile>(res.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
-
-  visualizeUserRole(roleIndex: number | undefined): string {
-    return this.userRoles[roleIndex ? roleIndex : 0];
-  }
-  // AVOID TO DELETE CURRENT USER
-  isOwner(user: Profile): boolean {
-    return this.exchangeServiceService.currentUser$.getValue()?.id === user?.id;
-  }
-  // FOR LOOP PERFORMANCE
-  trackByFn(index: number, user: Profile): number {
-    return user?.id;
-  }
-
-  async updateUser(user: Profile) {
+  public updateUser(user: Profile) {
       /*const { success, userData } = this.openUserModal(user);
       if (success) {
         const userIndex = this.userList.findIndex(
@@ -88,22 +68,7 @@ export class UsersListComponent implements OnInit {
     }*/
   }
 
-  public deleteUser(userData: Profile) {
-    /*const { success } = this.usersService.deleteUser(userData?.id);
-    if (success) {
-      const userIndex = this.userList.findIndex(
-        (usr) => usr.id === userData?.id
-      );
-      if (userIndex >= 0) {
-        this.userList.splice(userIndex, 1);
-        this.messageService.show({
-          message: `User (${userData?.fullName}) has been removed successfully`,
-        });
-      }
-    }*/
-  }
-
-  private openUserModal(user?: Profile) {
+  private openDialog(user?: Profile) {
     const userDialog = this.dialog.open(UserDialogComponent, {
       width: '450px',
       maxWidth: '100%',
@@ -132,6 +97,19 @@ export class UsersListComponent implements OnInit {
 
   onUpdate(row) {
 
+  }
+
+  updateDisabled(row) {
+    const currentUser = this.exchangeService.currentUser$.getValue();
+    if (currentUser.role === 'admin') { return false; }
+    else { return currentUser.id !== row?.id; }
+
+  }
+
+  onDeleteDisabled(row) {
+    const currentUser = this.exchangeService.currentUser$.getValue();
+    if (currentUser.role === 'user') { return true; }
+    else { return currentUser.id === row?.id; }
   }
 }
 

@@ -18,12 +18,10 @@ export class UsersService {
   ) {}
 
   public getAllUsers(): Observable<ResponseData> {
-    const currentUser: Profile =
-      this.dataExchangeService.currentUser$.getValue();
 
     const httpData: RequestData = {
       url: 'profiles',
-      params: { role_lte: currentUser?.role || 'user' },
+      params: { role_lte: 'user' },
     };
     return this.apiService.get(httpData).pipe(
       catchError(error => {
@@ -42,15 +40,6 @@ export class UsersService {
       url: `profiles/${user.id}`,
       body: user,
     };
-   /* const { success, error, data } = await this.apiService.put(httpData);
-    if (success) {
-      return { success: true, user: data };
-    } else {
-      this.snackMessage.show({
-        message: error?.message || 'Failure during update',
-      });
-      return { success: false, user: data };
-    }*/
     return null;
   }
 
