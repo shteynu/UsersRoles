@@ -1,0 +1,8 @@
+<mat-card class="my-3">
+  <ng-container *ngIf="currentUser$ | async as currentUser">
+    <mat-card-header *ngIf="currentUser">
+      <mat-card-title>{{ currentUser?.fullName }}</mat-card-title>
+      <mat-card-subtitle>{{ currentUser.date | date }}</mat-card-subtitle>
+    </mat-card-header>
+  </ng-container>
+</mat-card>
